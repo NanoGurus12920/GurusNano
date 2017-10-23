@@ -17,7 +17,6 @@ public class Cube extends LinearOpMode {
     private DcMotor linear;
     private Servo leftarm;
     private Servo rightarm;
-    private ColorSensor pigments;
 
     @Override
     public void runOpMode() throws InterruptedException {
