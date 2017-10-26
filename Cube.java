@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -17,6 +18,7 @@ public class Cube extends LinearOpMode {
     private DcMotor linear;
     private Servo leftarm;
     private Servo rightarm;
+    private Servo relicrecoveryarm;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -28,12 +30,14 @@ public class Cube extends LinearOpMode {
         linear = hardwareMap.dcMotor.get("linear");
         leftarm = hardwareMap.servo.get("leftarm");
         rightarm = hardwareMap.servo.get("rightarm");
+        relicrecoveryarm = hardwareMap.servo.get("relicrecoveryarm");
 
         //leftMotor.setDirection(DcMotor.Direction.REVERSE);
 
 
         leftarm.setPosition(0);
         rightarm.setPosition(1);
+        relicrecoveryarm.setPosition(0);
 
         waitForStart();
         // run until the end of the match (driver presses STOP)
@@ -64,6 +68,7 @@ public class Cube extends LinearOpMode {
             {
                 linear.setPower(0);
             }
+            // Linear Slides
             if(gamepad1.left_bumper)
             {
                 linear.setPower(-0.3);
@@ -71,6 +76,15 @@ public class Cube extends LinearOpMode {
             else
             {
                 linear.setPower(0);
+            }
+            // Relic Recovery
+            if (gamepad1.x)
+            {
+              relicrecoveryarm.setPosition(0.5);
+            }
+            else
+            {
+                relicrecoveryarm.setPosition(0);
             }
 
         }
