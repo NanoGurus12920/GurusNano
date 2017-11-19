@@ -20,6 +20,7 @@ public class Cube extends LinearOpMode {
     private Servo rightarm;
     private Servo relicrecoveryarm;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
@@ -38,14 +39,17 @@ public class Cube extends LinearOpMode {
         leftarm.setPosition(0);
         rightarm.setPosition(1);
         relicrecoveryarm.setPosition(0);
-
         waitForStart();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
-            leftMotor.setPower(gamepad1.left_stick_y); // set the left motor to the left, y-axis stick gamepad
-            rightMotor.setPower(-gamepad1.right_stick_y); // set the right motor to the right, y-axis stick gamepad
+
+            float left_power = -gamepad1.left_stick_y;
+            float right_power = -gamepad1.left_stick_y;
+
+            leftMotor.setPower(left_power);
+            rightMotor.setPower(right_power);
 
             if (gamepad1.a)
             {
