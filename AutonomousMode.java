@@ -78,7 +78,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
+@Autonomous(name="R1AutoMode", group="Pushbot")
 //@Disabled
 public class AutonomousMode extends LinearOpMode {
 
@@ -103,7 +103,7 @@ public class AutonomousMode extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = 0.6;
+    static final double DRIVE_SPEED = 0.5;
     static final double TURN_SPEED = 0.5;
 
     @Override
@@ -120,7 +120,7 @@ public class AutonomousMode extends LinearOpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "ATsODcD/////AAAAAVw2lR...d45oGpdljdOh5LuFB9nDNfckoxb8COxKSFX";
+        parameters.vuforiaLicenseKey = "AQg97OD/////AAAAGSDjZA+eGkd2gHbTl7kt1QB3wX/cq0qTsvj0FonpkRao8qy+XeqpK4zKIcQCW2QZJumCijTbg+jQF9FYMR+5l/VGJrjJzLl7RIbQTxhIVtxGgzj2nnHao8V7MtDvNdjK68wF5h7w4TwHHRhRDW4de8N87co3FMksjTVBxGKtEUlXeZn1Lcy5dkTpSm1skfAMxZX6j4hzp8B+ISM28CAwx90fOOYTvZnF82y7T2XqNlBfwXm9as/CDYy5Zw+ARMhPSit7VRKOQw6WRSJ0tZXt7yJcq9XHIjLFnU/reRrhx9q6RdyLnrGeiFK6HjgxOBertINXJhgJUquCzunWOeMOKxW8ut6Iw1AU9kxIjMhVbw/b";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
@@ -149,56 +149,48 @@ public class AutonomousMode extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-       while(opModeIsActive())
-       {
-        RelicRecoveryVuMark vuMark= RelicRecoveryVuMark.from(relicTemplate);
-           if (vuMark !=RelicRecoveryVuMark.UNKNOWN)
-           {
-               OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
-               if(pose !=null)
-               {
-                   VectorF trans = pose.getTranslation();
-                   Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                   tX = trans.get(0);
-                   tY = trans.get(1);
-                   tZ = trans.get(2);
+        while (opModeIsActive()) {
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+                if (pose != null) {
+                    VectorF trans = pose.getTranslation();
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                    tX = trans.get(0);
+                    tY = trans.get(1);
+                    tZ = trans.get(2);
 
-                   rX = rot.firstAngle;
-                   rY = rot.secondAngle;
-                   rZ = rot.thirdAngle;
-               }
-               if(vuMark == RelicRecoveryVuMark.LEFT)
-               {
-                   telemetry.addData("Vumark is", "Left");
-                   telemetry.addData("X =", tX);
-                   telemetry.addData("Y =", tY);
-                   telemetry.addData("Z =", tZ);
-                   encoderDrive(DRIVE_SPEED,  10,  10, 5.0);  // S1: Forward 10 Inches with 5 Sec timeout
-                   encoderDrive(TURN_SPEED,   3, -3, 4.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
-                   encoderDrive(DRIVE_SPEED, -3, -3, 4.0);  // S3: Reverse 3 Inches with 4 Sec timeout
-               }
-               else if(vuMark == RelicRecoveryVuMark.CENTER)
-               {
-                   telemetry.addData("Vumark is", "CENTER");
-                   telemetry.addData("X =", tX);
-                   telemetry.addData("Y =", tY);
-                   telemetry.addData("Z =", tZ);
-                   encoderDrive(DRIVE_SPEED,  10,  10, 5.0);  // S1: Forward 10 Inches with 5 Sec timeout
-                   encoderDrive(TURN_SPEED,   3, -3, 4.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
-                   encoderDrive(DRIVE_SPEED, -3, -3, 4.0);  // S3: Reverse 3 Inches with 4 Sec timeout
-               }
-               else if(vuMark == RelicRecoveryVuMark.RIGHT)
-               {
-                   telemetry.addData("Vumark is", "RIGHT");
-                   telemetry.addData("X =", tX);
-                   telemetry.addData("Y =", tY);
-                   telemetry.addData("Z =", tZ);
-                   encoderDrive(DRIVE_SPEED,  10,  10, 5.0);  // S1: Forward 10 Inches with 5 Sec timeout
-                   encoderDrive(TURN_SPEED,   3, -3, 4.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
-                   encoderDrive(DRIVE_SPEED, -3, -3, 4.0);  // S3: Reverse 3 Inches with 4 Sec timeout
-               }
-           }
-       }
+                    rX = rot.firstAngle;
+                    rY = rot.secondAngle;
+                    rZ = rot.thirdAngle;
+                }
+                if (vuMark == RelicRecoveryVuMark.LEFT) {
+                    telemetry.addData("Vumark is", "Left");
+                    telemetry.addData("X =", tX);
+                    telemetry.addData("Y =", tY);
+                    telemetry.addData("Z =", tZ);
+                    encoderDrive(DRIVE_SPEED, 48.0315, 48.0315, 5.0);  // S1: Forward 48 Inches with 5 Sec timeout
+                    encoderDrive(TURN_SPEED, 3, -3, 4.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -3, -3, 4.0);  // S3: Reverse 3 Inches with 4 Sec timeout
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+                    telemetry.addData("Vumark is", "CENTER");
+                    telemetry.addData("X =", tX);
+                    telemetry.addData("Y =", tY);
+                    telemetry.addData("Z =", tZ);
+                    encoderDrive(DRIVE_SPEED, 48.0315, 48.0315, 5.0);  // S1: Forward 48 Inches with 5 Sec timeout
+                    encoderDrive(TURN_SPEED, 3, -3, 4.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -3, -3, 4.0);  // S3: Reverse 3 Inches with 4 Sec timeout
+                } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    telemetry.addData("Vumark is", "RIGHT");
+                    telemetry.addData("X =", tX);
+                    telemetry.addData("Y =", tY);
+                    telemetry.addData("Z =", tZ);
+                    encoderDrive(DRIVE_SPEED, 48.0315, 48.0315, 5.0);  // S1: Forward 48 Inches with 5 Sec timeout
+                    encoderDrive(TURN_SPEED, 3, -3, 4.0);  // S2: Turn Right 3 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -3, -3, 4.0);  // S3: Reverse 3 Inches with 4 Sec timeout
+                }
+            }
+        }
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
