@@ -55,7 +55,8 @@ public class HardwareFinal
     /* Public OpMode members. */
     public DcMotor  leftDrive   = null;
     public DcMotor  rightDrive  = null;
-    public Servo    armServo    = null;
+    public Servo    leftServo    = null;
+    public Servo    rightServo = null;
 
 
     public static final double MID_SERVO       =  0.5 ;
@@ -79,6 +80,8 @@ public class HardwareFinal
         // Define and Initialize Motors
         leftDrive  = hwMap.get(DcMotor.class, "leftMotor");
         rightDrive = hwMap.get(DcMotor.class, "rightMotor");
+        leftServo = hwMap.get(Servo.class, "leftarm");
+        rightServo = hwMap.get(Servo.class, "rightarm");
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 

@@ -42,8 +42,8 @@ public class Cube extends LinearOpMode {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
-           // float left_power = -gamepad1.left_stick_y;
-           // float right_power = -gamepad1.left_stick_y;
+            // float left_power = -gamepad1.left_stick_y;
+            // float right_power = -gamepad1.left_stick_y;
 
             leftMotor.setPower(gamepad1.left_stick_y);
             rightMotor.setPower(-gamepad1.right_stick_x);

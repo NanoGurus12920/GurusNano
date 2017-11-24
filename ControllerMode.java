@@ -36,20 +36,42 @@ public class ControllerMode extends LinearOpMode {
         rightarm.setPosition(0.6);
 
         waitForStart();
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
-            //For Both Wheel
-            leftMotor.setPower(gamepad1.left_stick_y);
-            rightMotor.setPower(-gamepad1.right_stick_x);
+            /* For Both Wheel */
+                double throttle = gamepad1.left_stick_y;
+                double turn     = gamepad1.left_stick_x;
+                double leftspeed  = throttle - turn;
+                double rightspeed = throttle + turn;
+                leftMotor.setPower(leftspeed);
+                rightMotor.setPower(rightspeed);
+
+            // Try the top of bottom
+            /*leftMotor.setPower(gamepad1.left_stick_x);
+            rightMotor.setMode(gamepad1.left_stick_y);*/
+
 
             //For Linear Slide
-                linear.setPower(gamepad1.right_stick_x);
-                linear.setPower(gamepad1.right_stick_y);
+            linear.setPower(gamepad1.right_stick_x);
+            linear.setPower(gamepad1.right_stick_y);
+
+            if (gamepad2.a)
+            {
+                leftarm.setPosition(0.3);
+                rightarm.setPosition(0.6);
+
+            }
+
+            if (gamepad2.b)
+            {
+                leftarm.setPosition(0.1);
+                rightarm.setPosition(0.9);
             }
         }
     }
-
+}
 
