@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.io.LineNumberReader;
 
-@TeleOp(name="TeleOp", group="Linear Opmode")
+@TeleOp(name="ControllerMode", group="Linear Opmode")
 public class ControllerMode extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
@@ -43,12 +43,12 @@ public class ControllerMode extends LinearOpMode {
             telemetry.update();
 
             /* For Both Wheel */
-                double throttle = gamepad1.left_stick_y;
-                double turn     = gamepad1.left_stick_x;
-                double leftspeed  = throttle - turn;
-                double rightspeed = throttle + turn;
-                leftMotor.setPower(leftspeed);
-                rightMotor.setPower(rightspeed);
+            double throttle = gamepad1.left_stick_y;
+            double turn     = gamepad1.left_stick_x;
+            double leftspeed  = throttle - turn;
+            double rightspeed = throttle + turn;
+            leftMotor.setPower(leftspeed);
+            rightMotor.setPower(rightspeed);
 
             // Try the top of bottom
             /*leftMotor.setPower(gamepad1.left_stick_x);

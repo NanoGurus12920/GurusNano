@@ -103,7 +103,7 @@ public class R1AutoMode extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = 0.5;
+    static final double DRIVE_SPEED = 0.6;
     static final double TURN_SPEED = 0.5;
 
     @Override
@@ -140,11 +140,15 @@ public class R1AutoMode extends LinearOpMode {
                 robot.rightDrive.getCurrentPosition());
         telemetry.update();
 
+        robot.leftServo.setPosition(0.3); // The left servo close
+        robot.rightServo.setPosition(0.6); // The right servo close
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive())
         {
+            encoderDrive(DRIVE_SPEED, 8, 8, 4.0); // Go forward 8 inches in order to read the Vuforia Picture
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
@@ -164,31 +168,31 @@ public class R1AutoMode extends LinearOpMode {
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 37, 37, 10.0);  // S1: Forward 37 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 25, 25, 6.0);  // S1: Forward 37 Inches with 6 Sec timeout
                     encoderDrive(TURN_SPEED, 10, -10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 12, 12, 6.0);  // S3: Forward 12 Inches with 6 Sec timeout
-                   /* robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.leftServo.setPosition(0.9); // The right servo opens*/
+                    encoderDrive(DRIVE_SPEED, 10, 10, 5.0);  // S3: Forward 20 Inches with 5 Sec timeout
+                    robot.leftServo.setPosition(0.1); // The left servo opens
+                    robot.rightServo.setPosition(0.9); // The right servo opens
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark is", "CENTER");
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 34, 34, 6.0);  // S1: Forward 34 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 20, 20, 6.0);  // S1: Forward 34 Inches with 6 Sec timeout
                     encoderDrive(TURN_SPEED, 10, -10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 12, 12, 6.0);  // S3: Forward 12 Inches with 6 Sec timeout
-                   /* robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.leftServo.setPosition(0.9); // The right servo opens*/
+                    encoderDrive(DRIVE_SPEED, 10, 10, 5.0);  // S3: Forward 12 Inches with 5 Sec timeout
+                    robot.leftServo.setPosition(0.1); // The left servo opens
+                    robot.rightServo.setPosition(0.9); // The right servo opens
                 } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark is", "RIGHT");
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 31, 31, 6.0);  // S1: Forward 48 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 15, 15, 6.0);  // S1: Forward 48 Inches with 6 Sec timeout
                     encoderDrive(TURN_SPEED, 10, -10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 12, 12, 6.0);  // S3: Forward 12 Inches with 6 Sec timeout
-                    /*robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.leftServo.setPosition(0.9); // The right servo opens*/
+                    encoderDrive(DRIVE_SPEED, 10, 10, 5.0);  // S3: Forward 12 Inches with 5 Sec timeout
+                    robot.leftServo.setPosition(0.1); // The left servo opens
+                    robot.rightServo.setPosition(0.9); // The right servo opens
                 }
             }
         }

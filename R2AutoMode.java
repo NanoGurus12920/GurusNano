@@ -75,7 +75,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="R1AutoMode", group="Pushbot")
+@Autonomous(name="R2AutoMode", group="Pushbot")
 //@Disabled
 public class R2AutoMode extends LinearOpMode {
 
@@ -124,12 +124,8 @@ public class R2AutoMode extends LinearOpMode {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
 
-        telemetry.addData(">", "Press Play to start");
-        telemetry.update();
+        relicTrackables.activate();
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Status", "Resetting Encoders");    //
-        telemetry.update();
 
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -147,6 +143,7 @@ public class R2AutoMode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive())
+            encoderDrive(DRIVE_SPEED, 8, 8, 4.0); // Go forward 8 inches in order to read Vuforia pictures
         {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -167,37 +164,37 @@ public class R2AutoMode extends LinearOpMode {
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 15, 15, 6.0);  // S1: Forward 15 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 15, 15, 5.0);  // S1: Forward 15 Inches with 5 Sec timeout
                     encoderDrive(TURN_SPEED, -10, 10, 5.0);  // S2: Turn Left 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 10, 10, 6.0);  // S2: Forward 10 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 20, 20, 5.0);  // S2: Forward 20 Inches with 5 Sec timeout
                     encoderDrive(TURN_SPEED, 10, -10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 12, 12, 6.0);  // S3: Forward 12 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 8, 8, 4.0);  // S3: Forward 8 Inches with 4 Sec timeout
                     robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.leftServo.setPosition(0.9); // The right servo opens
+                    robot.rightServo.setPosition(0.9); // The right servo opens
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark is", "CENTER");
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 15, 15, 6.0);  // S1: Forward 15 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 15, 15, 5.0);  // S1: Forward 15 Inches with 5 Sec timeout
                     encoderDrive(TURN_SPEED, -10, 10, 5.0);  // S2: Turn Left 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 10, 10, 6.0);  // S2: Forward 10 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 15, 15, 5.0);  // S2: Forward 15 Inches with 5 Sec timeout
                     encoderDrive(TURN_SPEED, 10, -10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 12, 12, 6.0);  // S3: Forward 12 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 8, 8, 4.0);  // S3: Forward 8 Inches with 4 Sec timeout
                     robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.leftServo.setPosition(0.9); // The right servo opens
+                    robot.rightServo.setPosition(0.9); // The right servo opens
                 } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
                     telemetry.addData("Vumark is", "RIGHT");
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 37, 37, 6.0);  // S1: Forward 15 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 15, 15, 5.0);  // S1: Forward 15 Inches with 5 Sec timeout
                     encoderDrive(TURN_SPEED, 10, -10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 10, 10, 6.0);  // S2: Forward 10 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 10, 10, 5.0);  // S2: Forward 10 Inches with 5 Sec timeout
                     encoderDrive(TURN_SPEED, -10, 10, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 12, 12, 6.0);  // S3: Forward 12 Inches with 6 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 8, 8, 4.0);  // S3: Forward 8 Inches with 4 Sec timeout
                     robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.leftServo.setPosition(0.9); // The right servo opens
+                    robot.rightServo.setPosition(0.9); // The right servo opens
                 }
             }
         }
