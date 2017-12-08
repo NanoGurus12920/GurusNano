@@ -146,21 +146,12 @@ public class R1AutoMode extends LinearOpMode {
 
         robot.leftServo.setPosition(0.3); // The left servo close
         robot.rightServo.setPosition(0.6); // The right servo close
-        int i=1;
-        while (i < 3)
-        {
-            linear.setPower(0.1);
-            i= i+1;
-            if(i==3)
-            {
-                linear.setPower(0);
-            }
-        }
+
         waitForStart();
 
         while (opModeIsActive())
         {
-            encoderDrive(DRIVE_SPEED, -7, -7, 5.0); // Go forward 8 inches in order to read the Vuforia Picture
+            encoderDrive(DRIVE_SPEED, -7, -7, 3.0); // Go Backward 7 inches in order to read the Vuforia Picture
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
                 OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
@@ -181,40 +172,35 @@ public class R1AutoMode extends LinearOpMode {
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, -29, -29, 6.0);  // S1: go backwards 29 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, -12, 12, 5.0);  // S2: Turn Left 12 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 3.0);  // S3: Forward 3.5 Inches with 3 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -29, -29, 6.0);  // S1: Go backwards 29 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -12, 12, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
                     robot.leftServo.setPosition(0.1); // The left servo opens
                     robot.rightServo.setPosition(0.9); // The right servo opens
-                    //robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                   // robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    break;
+                    break;// stop
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark is", "CENTER");
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, -20, -20, 6.0);  // S1: Forward 34 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, -13, 13, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 2, 2, 4.0);  // S3: Forward 12 Inches with 5 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -27, -27, 6.0);  // S1: Go backwards 27 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -12, 12, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
                     robot.leftServo.setPosition(0.1); // The left servo opens
                     robot.rightServo.setPosition(0.9); // The right servo opens
-                    //robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    //robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    break;
-                } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    break; // stop
+                } else if (vuMark == RelicRecoveryVuMark.RIGHT)
+                {
                     telemetry.addData("Vumark is", "RIGHT");
                     telemetry.addData("X =", tX);
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, -15, -15, 6.0);  // S1: Forward 48 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, -13, 13, 5.0);  // S2: Turn Right 10 Inches with 5 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 2, 2, 4.0);  // S3: Forward 12 Inches with 5 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -23, -23, 6.0);  // S1: Go backwards 23 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -12, 12, 4.0);  // S2: Turn Left 13 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
                     robot.leftServo.setPosition(0.1); // The left servo opens
                     robot.rightServo.setPosition(0.9); // The right servo opens
-                    //robot.rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    //robot.leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                    break;
+                    break; // stop
                 }
             }
         }
@@ -222,6 +208,7 @@ public class R1AutoMode extends LinearOpMode {
         telemetry.addData("Path", "Complete");
         telemetry.update();
         stop();
+
     }
     /*
      *  Method to perfmorm a relative move, based on encoder counts.

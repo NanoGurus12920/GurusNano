@@ -32,8 +32,8 @@ public class ControllerMode extends LinearOpMode {
         leftarm = hardwareMap.servo.get("leftarm");
         rightarm = hardwareMap.servo.get("rightarm");
 
-        leftarm.setPosition(0.3);
-        rightarm.setPosition(0.6);
+        leftarm.setPosition(0.3); // the claw closes
+        rightarm.setPosition(0.6); // the claw closes
 
         waitForStart();
 
@@ -43,33 +43,29 @@ public class ControllerMode extends LinearOpMode {
             telemetry.update();
 
             /* For Both Wheel */
-            double throttle = gamepad1.left_stick_y;
-            double turn     = gamepad1.left_stick_x;
-            double leftspeed  = throttle - turn;
-            double rightspeed = throttle + turn;
-            leftMotor.setPower(leftspeed);
-            rightMotor.setPower(rightspeed);
-
-            // Try the top of bottom
-            /*leftMotor.setPower(gamepad1.left_stick_x);
-            rightMotor.setMode(gamepad1.left_stick_y);*/
+            double throttle = gamepad1.left_stick_y; // throttle equals the left joystick on the y-axis
+            double turn     = gamepad1.left_stick_x; // turn equals the left joystick on the x-axis
+            double leftspeed  = throttle - turn; // we take the throttle minue the turn to get the leftspeed
+            double rightspeed = throttle + turn; // we take the throttle plus the turn to get the rightspeed
+            leftMotor.setPower(leftspeed); // the left motor represents the leftspeed
+            rightMotor.setPower(rightspeed); // the right motor represents the rightspeed
 
 
             //For Linear Slide
-            linear.setPower(gamepad1.right_stick_x);
-            linear.setPower(gamepad1.right_stick_y);
+            linear.setPower(gamepad1.right_stick_x); // the linear slide goes up if the right joystick is pointing towards the x-axis
+            linear.setPower(gamepad1.right_stick_y); // the linear slide down up if the right joystick is pointing towards the y-axis
 
-            if (gamepad2.a)
+            if (gamepad2.a) // if a is pressed
             {
-                leftarm.setPosition(0.3);
-                rightarm.setPosition(0.6);
+                leftarm.setPosition(0.3); // the left claw is closed
+                rightarm.setPosition(0.6); // the right claw is closed
 
             }
 
-            if (gamepad2.b)
+            if (gamepad2.b) // if b is pressed
             {
-                leftarm.setPosition(0.1);
-                rightarm.setPosition(0.9);
+                leftarm.setPosition(0.1); // the left claw is open
+                rightarm.setPosition(0.9); // the right claw is open
             }
         }
     }
