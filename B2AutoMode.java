@@ -30,13 +30,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -45,7 +43,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -116,20 +113,6 @@ public class B2AutoMode extends LinearOpMode {
          */
         robot.init(hardwareMap);
 
-        linear = hardwareMap.dcMotor.get("linear");
-        colorSensor = hardwareMap.get(ColorSensor.class, "sensor_color");
-        colorSensor.enableLed(true);
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "AQg97OD/////AAAAGSDjZA+eGkd2gHbTl7kt1QB3wX/cq0qTsvj0FonpkRao8qy+XeqpK4zKIcQCW2QZJumCijTbg+jQF9FYMR+5l/VGJrjJzLl7RIbQTxhIVtxGgzj2nnHao8V7MtDvNdjK68wF5h7w4TwHHRhRDW4de8N87co3FMksjTVBxGKtEUlXeZn1Lcy5dkTpSm1skfAMxZX6j4hzp8B+ISM28CAwx90fOOYTvZnF82y7T2XqNlBfwXm9as/CDYy5Zw+ARMhPSit7VRKOQw6WRSJ0tZXt7yJcq9XHIjLFnU/reRrhx9q6RdyLnrGeiFK6HjgxOBertINXJhgJUquCzunWOeMOKxW8ut6Iw1AU9kxIjMhVbw/b";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-
-        relicTrackables.activate();
-
         robot.leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -151,68 +134,16 @@ public class B2AutoMode extends LinearOpMode {
 
         while (opModeIsActive())
         {
-            encoderDrive(DRIVE_SPEED, 7, 7, 3.0); // Go forward 7 inches in order to read the Vuforia Picture
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-                if (pose != null) {
-                    VectorF trans = pose.getTranslation();
-                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                    tX = trans.get(0);
-                    tY = trans.get(1);
-                    tZ = trans.get(2);
-
-                    rX = rot.firstAngle;
-                    rY = rot.secondAngle;
-                    rZ = rot.thirdAngle;
-                }
-
-                if (vuMark == RelicRecoveryVuMark.LEFT) {
-                    telemetry.addData("Vumark is", "LEFT");
-                    telemetry.addData("X =", tX);
-                    telemetry.addData("Y =", tY);
-                    telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 7, 7, 3.0);  // S1: Forward 7 Inches with 3 Sec timeout
-                    encoderDrive(TURN_SPEED, -10, 10, 4.0);  // S2: Turn Left 10 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 28, 28, 5.0);  // S2: Forward 28 Inches with 5 Sec timeout
-                    encoderDrive(TURN_SPEED, 10, -10, 4.0);  // S2: Turn Right 10 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
-                    robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.rightServo.setPosition(0.9); // The right servo opens
-                    break;// stop
-                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
-                    telemetry.addData("Vumark is", "CENTER");
-                    telemetry.addData("X =", tX);
-                    telemetry.addData("Y =", tY);
-                    telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 7, 7, 3.0);  // S1: Forward 7 Inches with 3 Sec timeout
-                    encoderDrive(TURN_SPEED, -10, 10, 4.0);  // S2: Turn Left 10 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 25, 25, 5.0);  // S2: Forward 25 Inches with 5 Sec timeout
-                    encoderDrive(TURN_SPEED, 10, -10, 4.0);  // S2: Turn Right 10 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
-                    robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.rightServo.setPosition(0.9); // The right servo opens
-                    break; // stop
-                } else if (vuMark == RelicRecoveryVuMark.RIGHT)
-                {
-                    telemetry.addData("Vumark is", "RIGHT");
-                    telemetry.addData("X =", tX);
-                    telemetry.addData("Y =", tY);
-                    telemetry.addData("Z =", tZ);
-                    encoderDrive(DRIVE_SPEED, 7, 7, 3.0);  // S1: Forward 7 Inches with 3 Sec timeout
-                    encoderDrive(TURN_SPEED, -10, 10, 4.0);  // S2: Turn Left 10 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 22, 22, 5.0);  // S2: Forward 22 Inches with 5 Sec timeout
-                    encoderDrive(TURN_SPEED, 10, -10, 4.0);  // S2: Turn Right 10 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
-                    robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.rightServo.setPosition(0.9); // The right servo opens
-                    break; // stop
-                }
-            }
+            encoderDrive(DRIVE_SPEED, -30, -30, 6.0);  // S1: Go backwards 30 Inches with 6 Sec timeout
+            encoderDrive(TURN_SPEED, 12, -12, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, 17, 17, 4.0);  // S3: Forward 17 Inches with 2 Sec timeout
+            encoderDrive(TURN_SPEED, 12, -12, 4.0); // S4: Turn Left 12 Inches with 4 second timeout
+            encoderDrive(DRIVE_SPEED, 4, 4, 2.0);
+            robot.leftServo.setPosition(0.1); // The left servo opens
+            robot.rightServo.setPosition(0.9); // The right servo opens
+            encoderDrive(DRIVE_SPEED, -0.5, -0.5, 1.0); //  Go Backward 0.5 inches
+            break;// stop
         }
-
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
         stop();
 
     }
