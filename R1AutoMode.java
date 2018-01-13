@@ -83,19 +83,6 @@ public class R1AutoMode extends LinearOpMode {
     HardwareFinal robot = new HardwareFinal();   // Use a Pushbot's hardware
     ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor linear;
-    OpenGLMatrix lastLocation = null;
-    double tX;
-    double tY;
-    double tZ;
-    double rX;
-    double rY;
-    double rZ;
-    VuforiaLocalizer vuforia;
-
-
-    ColorSensor colorSensor;
-
     static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
@@ -118,7 +105,6 @@ public class R1AutoMode extends LinearOpMode {
 
         robot.leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        linear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
         telemetry.addData("Path0", "Starting at %7d :%7d",
@@ -134,13 +120,13 @@ public class R1AutoMode extends LinearOpMode {
 
         while (opModeIsActive())
         {
-                    encoderDrive(DRIVE_SPEED, -30, -30, 6.0);  // S1: Go backwards 36 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, -12, 12, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
-                    robot.leftServo.setPosition(0.1); // The left servo opens
-                    robot.rightServo.setPosition(0.9); // The right servo opens
-                    encoderDrive(DRIVE_SPEED, -0.5, -0.5, 1.0); //  Go Backward 0.5 inches
-                    break;// stop
+            encoderDrive(DRIVE_SPEED, -20, -20, 6.0);  // S1: Go backwards 36 Inches with 6 Sec timeout
+            encoderDrive(TURN_SPEED, -12, 12, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
+            robot.leftServo.setPosition(0.1); // The left servo opens
+            robot.rightServo.setPosition(0.9); // The right servo opens
+            encoderDrive(DRIVE_SPEED, -0.5, -0.5, 1.0); //  Go Backward 0.5 inches
+            break;// stop
         }
         stop();
 

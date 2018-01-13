@@ -29,6 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.hardware.Sensor;
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -57,6 +60,9 @@ public class HardwareFinal
     public DcMotor  rightDrive  = null;
     public Servo    leftServo    = null;
     public Servo    rightServo = null;
+    public Servo    armServo = null;
+
+
 
 
     public static final double MID_SERVO       =  0.5 ;
@@ -82,6 +88,7 @@ public class HardwareFinal
         rightDrive = hwMap.get(DcMotor.class, "rightMotor");
         leftServo = hwMap.get(Servo.class, "leftarm");
         rightServo = hwMap.get(Servo.class, "rightarm");
+        armServo = hwMap.get(Servo.class, "armServo");
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
@@ -94,4 +101,4 @@ public class HardwareFinal
         leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
- }
+}
