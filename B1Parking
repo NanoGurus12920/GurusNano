@@ -116,9 +116,9 @@ public class B1Parking extends LinearOpMode {
         waitForStart();
         while (opModeIsActive())
         {
-            encoderDrive(DRIVE_SPEED, -20, -20, 6.0);  // S1: Go backwards 30 Inches with 6 Sec timeout
-            encoderDrive(TURN_SPEED, 12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, 3.5, 3.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
+            encoderDrive(DRIVE_SPEED, 20, 20, 6.0);  // S1: Go forwards 20 Inches with 6 Sec timeout
+            encoderDrive(TURN_SPEED, 12, -12, 4.0);  // S2: Turn right 12 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, -2, -2, 2.0);  // S3: Backward 2 Inches with 2 Sec timeout
             break;// stop
         }
         stop();
