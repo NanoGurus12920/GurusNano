@@ -147,9 +147,9 @@ public class B1Jewel extends LinearOpMode {
             telemetry.addData("Blue ", blueValue);
             telemetry.update();
 
-            if (redValue>blueValue){    //Red jewel detected, knock off blue jewel using small arm
+            if (redValue<blueValue){    //Blue jewel detected, knock off red jewel using small arm
                 smallJewelArm.setPosition(1);
-            }else{                      //Blue jewel detected, knock it off using small arm
+            }else{                      //Red jewel detected, knock it off using small arm
                 smallJewelArm.setPosition(0);
             }
         }
