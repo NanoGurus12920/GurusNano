@@ -99,6 +99,7 @@ public class R1FullAuto extends LinearOpMode {
     double rY;
     double rZ;
     VuforiaLocalizer vuforia;
+    VuforiaTrackable relicTemplate;
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -110,22 +111,22 @@ public class R1FullAuto extends LinearOpMode {
         parameters.vuforiaLicenseKey = "AQg97OD/////AAAAGSDjZA+eGkd2gHbTl7kt1QB3wX/cq0qTsvj0FonpkRao8qy+XeqpK4zKIcQCW2QZJumCijTbg+jQF9FYMR+5l/VGJrjJzLl7RIbQTxhIVtxGgzj2nnHao8V7MtDvNdjK68wF5h7w4TwHHRhRDW4de8N87co3FMksjTVBxGKtEUlXeZn1Lcy5dkTpSm1skfAMxZX6j4hzp8B+ISM28CAwx90fOOYTvZnF82y7T2XqNlBfwXm9as/CDYy5Zw+ARMhPSit7VRKOQw6WRSJ0tZXt7yJcq9XHIjLFnU/reRrhx9q6RdyLnrGeiFK6HjgxOBertINXJhgJUquCzunWOeMOKxW8ut6Iw1AU9kxIjMhVbw/b";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
-
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTrackables.activate();
         waitForStart();
-
         while (opModeIsActive()) {
             armDown(2);
             jewel(2);
             armUp(2);
             grabGlyph(1);
-            gotoSafety(12);
+            //gotoSafety(12);
+            Vuforia(12);
             dropGlyph(1);
-            //Vuforia(12);
             break;// stop
         }
         stop();
     }
-
     /**
      * Bringing both the arms down to prepare for using the color sensor
      * @param holdTime
@@ -138,7 +139,6 @@ public class R1FullAuto extends LinearOpMode {
             robot.smallJewelArm.setPosition(0.45);  // Move up the small arm - the way its installed, starting position is 0. facing front
             robot.largeJewelArm.setPosition(0.03);  // Move down - the way it's installed, starting position is 0.5, facing up
         }
-
     }
 
     /**
@@ -148,7 +148,6 @@ public class R1FullAuto extends LinearOpMode {
     public void jewel(double holdTime){
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
-
         int redValue= color_sensor.red();
         int blueValue= color_sensor.blue();
         while (opModeIsActive() && holdTimer.time() < holdTime) {
@@ -287,10 +286,7 @@ public class R1FullAuto extends LinearOpMode {
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
 
-        while (opModeIsActive() && holdTimer.time() < seconds) {
-            VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-            VuforiaTrackable relicTemplate = relicTrackables.get(0);
-            relicTrackables.activate();
+        while (opModeIsActive() && holdTimer.time() < seconds) {          
             encoderDrive(DRIVE_SPEED, -7, -7, 3.0); // Go Backward 7 inches in order to read the Vuforia Picture
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
