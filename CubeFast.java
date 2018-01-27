@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Path;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "Cube2", group = "Linear Opmode")  // @Autonomous(...) is the other common choice
-public class Cube2 extends LinearOpMode {
+@TeleOp(name = "CubeFast", group = "Linear Opmode")  // @Autonomous(...) is the other common choice
+public class CubeFast extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftMotor;
@@ -20,7 +17,7 @@ public class Cube2 extends LinearOpMode {
     private Servo largeJewelArm   = null;
 
     /**
-     * This is the code for moving the bot using two joysticks
+     * This is the code for moving the bot using only one joystick
      */
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,24 +33,39 @@ public class Cube2 extends LinearOpMode {
         waitForStart();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-            largeJewelArm.setPosition(0.5);
+            largeJewelArm.setPosition(0.3);
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
 
-            // Wheels
-            leftMotor.setDirection(DcMotor.Direction.REVERSE);
-            leftMotor.setPower(gamepad1.left_stick_y);
-            rightMotor.setPower(gamepad1.right_stick_y);
+            double x = gamepad1.left_stick_x;
+            double y     = gamepad1.left_stick_y;
+            double leftspeed  = x - y ;
+            double rightspeed = x + y ;
+
+            leftMotor.setPower(leftspeed);
+            rightMotor.setPower(rightspeed);
+
+            if(gamepad1.a) {
+                leftMotor.setPower(1);
+                rightMotor.setPower(1);
+            }
             if (gamepad2.right_bumper) {
                 leftEscalator.setPower(0.7);
                 rightEscalator.setPower(-0.7);
             }
-
+            /*else
+            {
+                leftEscalator.setPower(0);
+            }*/
             // Linear Slides
             if (gamepad2.left_bumper) {
                 leftEscalator.setPower(0);
                 rightEscalator.setPower(0);
             }
+            /*else
+            {
+                leftEscalator.setPower(0);
+            }*/
         }
     }
 }

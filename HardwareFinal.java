@@ -56,18 +56,17 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class HardwareFinal
 {
     /* Public OpMode members. */
-    public DcMotor  leftDrive   = null;
-    public DcMotor  rightDrive  = null;
-    public Servo    leftServo    = null;
-    public Servo    rightServo = null;
-    public Servo    armServo = null;
+    public DcMotor  leftMotor   = null;
+    public DcMotor  rightMotor  = null;
+    public DcMotor  leftEscalator = null;
+    public DcMotor  rightEscalator = null;
+    public Servo    largeJewelArm = null;
+    public Servo    smallJewelArm = null;
 
 
-
-
-    public static final double MID_SERVO       =  0.5 ;
+ /*   public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
-    public static final double ARM_DOWN_POWER  = -0.45 ;
+    public static final double ARM_DOWN_POWER  = -0.45 ;*/
 
     /* local OpMode members. */
     HardwareMap hwMap           =  null;
@@ -84,21 +83,22 @@ public class HardwareFinal
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftDrive  = hwMap.get(DcMotor.class, "leftMotor");
-        rightDrive = hwMap.get(DcMotor.class, "rightMotor");
-        leftServo = hwMap.get(Servo.class, "leftarm");
-        rightServo = hwMap.get(Servo.class, "rightarm");
-        armServo = hwMap.get(Servo.class, "armServo");
-        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        leftMotor = hwMap.get(DcMotor.class,"leftMotor");
+        rightMotor = hwMap.get(DcMotor.class,"rightMotor");
+        leftEscalator = hwMap.get(DcMotor.class,"leftEscalator");
+        rightEscalator = hwMap.get(DcMotor.class,"rightEscalator");
+        largeJewelArm = hwMap.get(Servo.class,"leftarm");
+        smallJewelArm = hwMap.get(Servo.class,"rightarm");
+        /*leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors*/
 
         // Set all motors to zero power
-        leftDrive.setPower(0);
-        rightDrive.setPower(0);
+        leftMotor.setPower(0);
+        rightMotor.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

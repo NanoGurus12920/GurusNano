@@ -33,7 +33,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -76,9 +75,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "R1FullAuto", group = "Pushbot")
+@Autonomous(name = "R2FullAuto", group = "Pushbot")
 //@Disabled
-public class R1FullAuto extends LinearOpMode {
+public class R2FullAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     ElapsedTime runtime = new ElapsedTime();
@@ -98,6 +97,7 @@ public class R1FullAuto extends LinearOpMode {
     double rX;
     double rY;
     double rZ;
+
     VuforiaLocalizer vuforia;
     VuforiaTrackable relicTemplate;
 
@@ -122,7 +122,7 @@ public class R1FullAuto extends LinearOpMode {
             armDown(2);
             jewel(2);
             armUp(2);
-           // grabGlyph(1);
+            // grabGlyph(1);
             //gotoSafety(12);
             Vuforia(12);
             dropGlyph(1);
@@ -143,7 +143,6 @@ public class R1FullAuto extends LinearOpMode {
             robot.smallJewelArm.setPosition(0.45);  // Move up the small arm - the way its installed, starting position is 0. facing front
             robot.largeJewelArm.setPosition(0.85);  // Move down - the way it's installed, starting position is 0.5, facing up
         }
-
     }
 
     /**
@@ -179,8 +178,8 @@ public class R1FullAuto extends LinearOpMode {
 
 
         while (opModeIsActive() && holdTimer.time() < holdTime) {
-            robot.largeJewelArm.setPosition(0.35);  //this servo needs to go up 90 degrees
-           //robot.smallJewelArm.setPosition(0.45);  //this servo needs to go up 180 degrees
+            //smallJewelArm.setPosition(0);  //this servo needs to go up 180 degrees
+            robot.largeJewelArm.setPosition(0.3);  //this servo needs to go up 90 degrees
         }
     }
 
@@ -199,9 +198,11 @@ public class R1FullAuto extends LinearOpMode {
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
         while (opModeIsActive()&& holdTimer.time() < seconds) {
-            encoderDrive(DRIVE_SPEED, -22.5, -22.5, 6.0);  // S1: Go backwards 22 Inches with 6 Sec timeout
-            encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, -6.0, -6.0, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+            encoderDrive(DRIVE_SPEED, -16, -16, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+            encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn left 9 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, -9, -9, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+            encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
             break;// stop
         }
     }
@@ -319,9 +320,11 @@ public class R1FullAuto extends LinearOpMode {
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
                     telemetry.update();
-                    encoderDrive(DRIVE_SPEED, -26.5, -26.5, 6.0);  // S1: Go backwards 23 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, 9.0, -9.0, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, -8.0, -8.0, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -23, -23, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn left 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -9, -9, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
                     break;// stop
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark is", "CENTER");
@@ -329,9 +332,11 @@ public class R1FullAuto extends LinearOpMode {
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
                     telemetry.update();
-                    encoderDrive(DRIVE_SPEED, -20.0, -20.0, 6.0);  // S1: Go backwards 27 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, 9.0, -9.0, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, -8.5, -8.5, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -16, -16, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn left 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -9, -9, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
                     break; // stop
                 } else if (vuMark == RelicRecoveryVuMark.RIGHT)
                 {
@@ -340,9 +345,11 @@ public class R1FullAuto extends LinearOpMode {
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
                     telemetry.update();
-                    encoderDrive(DRIVE_SPEED, -14.0, -14.0, 6.0);  // S1: Go backwards 23 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, 9.0, -9.0, 4.0);  // S2: Turn Left 13 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, -9, -9, 2.0);  // S3: Forward 3.5 Inches with 2 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -6, -6, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn left 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -9, -9, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
                     break; // stop
                 }
             }
