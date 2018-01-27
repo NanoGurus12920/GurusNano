@@ -111,13 +111,13 @@ public class R2FullAuto extends LinearOpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "AQg97OD/////AAAAGSDjZA+eGkd2gHbTl7kt1QB3wX/cq0qTsvj0FonpkRao8qy+XeqpK4zKIcQCW2QZJumCijTbg+jQF9FYMR+5l/VGJrjJzLl7RIbQTxhIVtxGgzj2nnHao8V7MtDvNdjK68wF5h7w4TwHHRhRDW4de8N87co3FMksjTVBxGKtEUlXeZn1Lcy5dkTpSm1skfAMxZX6j4hzp8B+ISM28CAwx90fOOYTvZnF82y7T2XqNlBfwXm9as/CDYy5Zw+ARMhPSit7VRKOQw6WRSJ0tZXt7yJcq9XHIjLFnU/reRrhx9q6RdyLnrGeiFK6HjgxOBertINXJhgJUquCzunWOeMOKxW8ut6Iw1AU9kxIjMhVbw/b";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         relicTemplate = relicTrackables.get(0);
-        relicTrackables.activate();
-
+      
         waitForStart();
-
+        relicTrackables.activate();
         while (opModeIsActive()) {
             armDown(2);
             jewel(2);
