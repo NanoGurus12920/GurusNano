@@ -112,14 +112,12 @@ public class B2FullAuto extends LinearOpMode {
         parameters.vuforiaLicenseKey = "AQg97OD/////AAAAGSDjZA+eGkd2gHbTl7kt1QB3wX/cq0qTsvj0FonpkRao8qy+XeqpK4zKIcQCW2QZJumCijTbg+jQF9FYMR+5l/VGJrjJzLl7RIbQTxhIVtxGgzj2nnHao8V7MtDvNdjK68wF5h7w4TwHHRhRDW4de8N87co3FMksjTVBxGKtEUlXeZn1Lcy5dkTpSm1skfAMxZX6j4hzp8B+ISM28CAwx90fOOYTvZnF82y7T2XqNlBfwXm9as/CDYy5Zw+ARMhPSit7VRKOQw6WRSJ0tZXt7yJcq9XHIjLFnU/reRrhx9q6RdyLnrGeiFK6HjgxOBertINXJhgJUquCzunWOeMOKxW8ut6Iw1AU9kxIjMhVbw/b";
         parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
-
         this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         relicTemplate = relicTrackables.get(0);
 
         waitForStart();
         relicTrackables.activate();
-
         while (opModeIsActive()) {
             armDown(2);
             jewel(2);
@@ -145,6 +143,7 @@ public class B2FullAuto extends LinearOpMode {
             robot.smallJewelArm.setPosition(0.45);  // Move up the small arm - the way its installed, starting position is 0. facing front
             robot.largeJewelArm.setPosition(0.85);  // Move down - the way it's installed, starting position is 0.5, facing up
         }
+
     }
 
     /**
@@ -162,7 +161,7 @@ public class B2FullAuto extends LinearOpMode {
             telemetry.addData("Blue ", blueValue);
             telemetry.update();
 
-            if (redValue<blueValue){    //Red jewel detected, knock off blue jewel using small arm
+            if (redValue>blueValue){    //Red jewel detected, knock off blue jewel using small arm
                 robot.smallJewelArm.setPosition(1);
             }else{                      //Blue jewel detected, knock it off using small arm
                 robot.smallJewelArm.setPosition(0);
@@ -200,11 +199,11 @@ public class B2FullAuto extends LinearOpMode {
         ElapsedTime holdTimer = new ElapsedTime();
         holdTimer.reset();
         while (opModeIsActive()&& holdTimer.time() < seconds) {
-            encoderDrive(DRIVE_SPEED, 16, 16, 6.0);  // S1: Go foward 16 Inches with 6 Sec timeout
-            encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S2: Turn right 9 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, 9, 9, 2.0);  // S3: Foward 9 Inches with 2 Sec timeout
-            encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 2.5 Inches with 2 Sec timeout
+            encoderDrive(DRIVE_SPEED, 20, 20, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+            encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, -5, -5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+            encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+            encoderDrive(DRIVE_SPEED, -4, -4, 4.0);  // S2: backward 4 inches
             break;// stop
         }
     }
@@ -292,7 +291,6 @@ public class B2FullAuto extends LinearOpMode {
 
         }
     }
-
     public void Vuforia(double seconds)
     {
         ElapsedTime holdTimer = new ElapsedTime();
@@ -300,7 +298,7 @@ public class B2FullAuto extends LinearOpMode {
 
         while (opModeIsActive() && holdTimer.time() < seconds) {
             robot.smallJewelArm.setPosition(0.45);  //this servo needs to go up 180 degrees
-            encoderDrive(DRIVE_SPEED, -3.5, -3.5, 0.5); // Go Backward 7 inches in order to read the Vuforia Picture
+            encoderDrive(0.05, -4.5, -4.5, 5.5); // Go Backward 5 inches in order to read the Vuforia Picture
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             telemetry.addData("VuMark Value is =",vuMark);
             telemetry.update();
@@ -322,11 +320,11 @@ public class B2FullAuto extends LinearOpMode {
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
                     telemetry.update();
-                    encoderDrive(DRIVE_SPEED, 23, 23, 6.0);  // S1: Go forward 20 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S2: Turn right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 9, 9, 2.0);  // S3: Foward 10 Inches with 2 Sec timeout
-                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S5: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(0.6, 22.5, 22.5, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -5, -5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -4, -4, 4.0);  // S2: backward 4 inches
                     break;// stop
                 } else if (vuMark == RelicRecoveryVuMark.CENTER) {
                     telemetry.addData("Vumark is", "CENTER");
@@ -334,11 +332,11 @@ public class B2FullAuto extends LinearOpMode {
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
                     telemetry.update();
-                    encoderDrive(DRIVE_SPEED, 16, 16, 6.0);  // S1: Go forward 20 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S2: Turn right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 9, 9, 2.0);  // S3: Forward 10 Inches with 2 Sec timeout
-                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(0.6, 31, 31, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -11, -11, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -4, -4, 4.0);  // S2: backward 4 inches
                     break; // stop
                 } else if (vuMark == RelicRecoveryVuMark.RIGHT)
                 {
@@ -347,16 +345,20 @@ public class B2FullAuto extends LinearOpMode {
                     telemetry.addData("Y =", tY);
                     telemetry.addData("Z =", tZ);
                     telemetry.update();
-                    encoderDrive(DRIVE_SPEED, 6,  6, 6.0);  // S1: Go forward 20 Inches with 6 Sec timeout
-                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S2: Turn right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, 9, 9, 2.0);  // S3: Forward 10 Inches with 2 Sec timeout
-                    encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S4: Turn right 9 Inches with 4 Sec timeout
-                    encoderDrive(DRIVE_SPEED, -2.5, -2.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(0.6, 22.5, 22.5, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -16.5, -16.5, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                    encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                    encoderDrive(DRIVE_SPEED, -4, -4, 4.0);  // S2: backward 4 inches
                     break; // stop
                 }
             }
             else{
-                gotoSafety(6.0);// if vuforia didnt read the picture, ety.
+                encoderDrive(0.6, 31, 31, 6.0);  // S1: Go backwards 20 Inches with 6 Sec timeout
+                encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                encoderDrive(DRIVE_SPEED, -12, -12, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+                encoderDrive(TURN_SPEED, -9, 9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
+                encoderDrive(DRIVE_SPEED, -2.5, -2.5, 4.0);  // S2: backward 4 inches
                 break;
             }
         }

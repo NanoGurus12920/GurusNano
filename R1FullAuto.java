@@ -117,8 +117,9 @@ public class R1FullAuto extends LinearOpMode {
         relicTemplate = relicTrackables.get(0);
 
         waitForStart();
-       relicTrackables.activate();
+
         while (opModeIsActive()) {
+            relicTrackables.activate();
             armDown(2);
             jewel(2);
             armUp(2);
@@ -201,7 +202,7 @@ public class R1FullAuto extends LinearOpMode {
         while (opModeIsActive()&& holdTimer.time() < seconds) {
             encoderDrive(DRIVE_SPEED, -22.5, -22.5, 6.0);  // S1: Go backwards 22 Inches with 6 Sec timeout
             encoderDrive(TURN_SPEED, 9, -9, 4.0);  // S2: Turn Right 9 Inches with 4 Sec timeout
-            encoderDrive(DRIVE_SPEED, -6.0, -6.0, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
+            encoderDrive(DRIVE_SPEED, -8.0, -8.0, 2.0);  // S3: Backward 10 Inches with 2 Sec timeout
             break;// stop
         }
     }
@@ -297,7 +298,7 @@ public class R1FullAuto extends LinearOpMode {
 
         while (opModeIsActive() && holdTimer.time() < seconds) {
             robot.smallJewelArm.setPosition(0.45);  //this servo needs to go up 180 degrees
-            encoderDrive(DRIVE_SPEED, -3.5, -3.5, 0.5); // Go Backward 7 inches in order to read the Vuforia Picture
+            encoderDrive(0.125, -7.0, -7.0, 0.5); // Go Backward 7 inches in order to read the Vuforia Picture
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             telemetry.addData("VuMark Value is =",vuMark);
             telemetry.update();
